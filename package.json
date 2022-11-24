@@ -1,0 +1,24 @@
+{
+  "name": "js-agent-based-models",
+  "version": "1.0.0",
+  "description": "A collection of agent based model simulations in javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MikeBlakeway/js-agent-based-models.git"
+  },
+  "keywords": [
+    "javascript",
+    "abm",
+    "simulation"
+  ],
+  "author": "MikeBlakeway",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MikeBlakeway/js-agent-based-models/issues"
+  },
+  "homepage": "https://github.com/MikeBlakeway/js-agent-based-models#readme"
+}
