@@ -9,7 +9,13 @@ const stylesHandler = isProduction
     : 'style-loader'
 
 const config = {
-    entry: './src/index.js',
+    entry: {
+        index: {
+            import: './src/index.js',
+            dependOn: 'shared',
+        },
+        shared: 'p5',
+    },
     output: {
         path: path.resolve(__dirname, 'build'),
     },
@@ -19,11 +25,12 @@ const config = {
         static: {
             directory: path.join(__dirname, 'public'),
         },
-        compress: true,
         port: 3000,
     },
     optimization: {
-        runtimeChunk: 'single',
+        splitChunks: {
+            chunks: 'all',
+        },
     },
     plugins: [
         new HtmlWebpackPlugin({
