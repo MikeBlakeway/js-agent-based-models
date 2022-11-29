@@ -1,16 +1,16 @@
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from './constants'
+import { CANVAS } from './constants'
 import { populateAgents, startAgents } from './services'
 
 const economy = _p => {
     const agents = populateAgents(_p)
 
     _p.setup = () => {
-        _p.createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT)
+        _p.createCanvas(CANVAS.WIDTH, CANVAS.HEIGHT)
     }
 
     _p.draw = () => {
         _p.background(240)
-        startAgents(agents)
+        startAgents(agents, _p)
     }
 }
 

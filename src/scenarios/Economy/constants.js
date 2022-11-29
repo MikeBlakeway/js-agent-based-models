@@ -1,8 +1,14 @@
-const CANVAS_WIDTH = window.innerWidth * 0.98
-const CANVAS_HEIGHT = window.innerHeight * 0.95
-const AGENT = {
-    MAX_POPULATION: 2,
-    MASS: 1.5,
+const CANVAS = {
+    WIDTH: window.innerWidth * 0.98,
+    HEIGHT: window.innerHeight * 0.95,
 }
 
-export { CANVAS_HEIGHT, CANVAS_WIDTH, AGENT }
+const AGENT = {
+    MAX_POPULATION: 2,
+}
+
+const PHYSICS = {
+    C: 10,
+}
+
+export { CANVAS, AGENT, PHYSICS }
