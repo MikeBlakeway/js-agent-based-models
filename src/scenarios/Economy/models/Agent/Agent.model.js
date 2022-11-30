@@ -1,19 +1,26 @@
-import { CANVAS_HEIGHT, CANVAS_WIDTH, PHYSICS } from '../../constants'
-
+import { AGENT, PHYSICS } from '../../constants'
+// let m = _p.random(AGENT.MASS, AGENT.MASS + AGENT.MASS)
 export default class Agent {
-    constructor({ x, y, m }, p5) {
+    constructor({ x, y }, p5) {
+        // P5 METHODS
         this.p5 = p5
-        this.Vector = p5.constructor.Vector
+        this.V = p5.constructor.Vector
         this.map = this.p5.map
 
-        this.mass = m
-        this.r = 2
-        this.d = this.r * 2
+        // CONSTANTS
+        this.mass = AGENT.MASS
+        this.r = AGENT.RADIUS
+        this.vision = AGENT.VISION
 
+        // PHYSICS
+        this.max_speed = 10 / this.mass
+
+        // VECTORS
         this.position = p5.createVector(x, y)
         this.velocity = p5.createVector(0, 0)
         this.acceleration = p5.createVector(0, 0)
-        this.max_speed = 4 * this.mass
+
+        this.maxForce = this.max_speed * this.mass
     }
 
     update() {
@@ -25,37 +32,64 @@ export default class Agent {
         this.position.add(this.velocity)
         // Reset accelerationelertion to 0 each cycle
         this.acceleration.mult(0)
+        const energy = this.calcKineticEnergy(this.mass, this.velocity)
+        console.log(energy)
     }
 
-    // Newton's 2nd law: F = M * A
-    // or A = F / M
+    /**
+     * PHYSICS METHODS
+     */
+
+    /**
+     * @param {Force} F
+     * Newton's 2nd Law:
+     * F = M * A
+     * or A = F / M
+     */
     applyForce = function (F) {
-        const A = this.Vector.div(F, this.mass)
+        const A = this.V.div(F, this.mass)
         this.acceleration.add(A)
     }
 
-    // A method that calculates a steering force towards a target
-    // STEER = DESIRED MINUS VELOCITY
-    seek(target) {
-        // _v: vector pointing from agent to target
-        const _v = this.Vector.sub(target, this.position)
-        let d = _v.mag()
-        // Scale with arbitrary damping within 100 pixels
-        if (d < 100) {
-            var m = this.map(d, 0, 100, 0, this.max_speed)
-            _v.setMag(m)
+    calcMomentum = function (mass, velocity) {
+        return velocity.mult(mass)
+    }
+
+    calcKineticEnergy = function (mass, velocity) {
+        const keMass = 0.5 * mass
+        const v2 = velocity.mult(velocity)
+        return v2.mult(keMass)
+    }
+
+    // A method that calculates a steering Force towards a target
+    // STEER = Force MINUS VELOCITY
+    moveTo(target) {
+        // targetVector: vector pointing from agent to target
+        const targetVector = this.V.sub(target, this.position)
+        const distanceToTarget = targetVector.mag()
+
+        if (distanceToTarget < this.vision) {
+            const reducedSpeed = this.map(
+                distanceToTarget,
+                0,
+                this.vision,
+                0,
+                this.max_speed
+            )
+            targetVector.setMag(reducedSpeed)
         } else {
-            _v.setMag(this.max_speed)
+            targetVector.setMag(this.max_speed)
         }
 
         // the closer it gets, the slower it goes
-        let force = this.Vector.sub(_v, this.velocity)
-        force.limit(0.1)
-        this.applyForce(force)
+        targetVector.sub(this.velocity)
+        const maxForce = targetVector.mult(this.mass)
+        // targetVector.limit(maxForce)
+        this.applyForce(maxForce)
     }
 
     display() {
-        this.p5.circle(this.position.x, this.position.y, this.d)
+        this.p5.circle(this.position.x, this.position.y, this.r * 2)
         this.p5.fill(250, 128, 114)
         this.p5.stroke(250, 128, 114)
     }

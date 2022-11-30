@@ -1,4 +1,4 @@
-import { CANVAS, AGENT, PHYSICS } from '../constants'
+import { CANVAS, AGENT } from '../constants'
 import Agent from '../models/Agent/Agent.model'
 
 export const populateAgents = _p => {
@@ -7,9 +7,8 @@ export const populateAgents = _p => {
     for (let i = 0; i < AGENT.MAX_POPULATION; i++) {
         let x = _p.random(0, CANVAS.WIDTH - i)
         let y = _p.random(0, CANVAS.HEIGHT - i)
-        let m = 1 * _p.random()
 
-        agentsArray.push(new Agent({ x, y, m }, _p))
+        agentsArray.push(new Agent({ x, y }, _p))
     }
 
     return agentsArray

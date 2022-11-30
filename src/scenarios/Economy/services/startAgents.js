@@ -1,8 +1,10 @@
+import { CANVAS } from '../constants'
+
 export const startAgents = (agents, _p) => {
-    const target = _p.createVector(100, 100)
+    const target = _p.createVector(CANVAS.WIDTH / 2, CANVAS.HEIGHT / 2)
 
     return agents.map(agent => {
-        agent.seek(target)
+        agent.moveTo(target)
         agent.update()
         agent.display()
     })

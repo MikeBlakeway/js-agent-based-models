@@ -4,11 +4,14 @@ const CANVAS = {
 }
 
 const AGENT = {
-    MAX_POPULATION: 2,
+    MAX_POPULATION: 1,
+    MASS: 3,
+    RADIUS: 3,
+    VISION: 100,
 }
 
 const PHYSICS = {
-    C: 10,
+    C: 1,
 }
 
 export { CANVAS, AGENT, PHYSICS }
